@@ -6,18 +6,17 @@ local conf = require('table-nvim.config')
 -- The second row should always be the delimiter row
 local delimiter_row = 2
 
----@class (exact) Metadata metadata related to a markdown table.
+---@class (exact) Formatter Provides functionality to format markdown tables.
 ---@field start number Index of the first row in the table.
 ---@field end_ number Index of the last row in the table.
 ---@field indent number Indentation of the table.
 ---@field rows string[][] Rows in the table, each row is an array of strings.
 ---@field widths number[] Widths of each column of the table.
-local Metadata = {}
+local Formatter = {}
 
----Parse metadata from a table root node.
 ---@param root TSNode The root node of a table.
----@return Metadata
-function Metadata:new(root)
+---@return Formatter
+function Formatter:new(root)
   assert(utils.is_tbl_root(root), 'not a table root node')
 
   local config = conf.get_config()
@@ -59,8 +58,8 @@ function Metadata:new(root)
   end
 
 
-  ---@type Metadata
-  local m = {
+  ---@type Formatter
+  local f = {
     start = start,
     end_ = end_,
     indent = indent,
@@ -70,12 +69,12 @@ function Metadata:new(root)
 
   ---@diagnostic disable-next-line: inject-field
   self.__index = self
-  return setmetatable(m, self)
+  return setmetatable(f, self)
 end
 
 ---Renders the table into an array of lines
 ---@return string[]
-function Metadata:render()
+function Formatter:render()
   local lines = {}
 
   for r, row in ipairs(self.rows) do
@@ -109,4 +108,4 @@ function Metadata:render()
   return lines
 end
 
-return Metadata
+return Formatter
