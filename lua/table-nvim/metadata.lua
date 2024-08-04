@@ -2,6 +2,9 @@ local ts = vim.treesitter
 
 local get_config = require('table-nvim.config').get_config
 
+-- The second row should always be the delimiter row
+local delimiter_row = 2
+
 ---@class (exact) Metadata metadata related to a markdown table.
 ---@field start number Index of the first row in the table.
 ---@field end_ number Index of the last row in the table.
@@ -36,14 +39,19 @@ function Metadata:new(root)
       local text = ts.get_node_text(col, 0):match('^%s*(.-)%s*$')
       local width = #text
 
+      if config.padd_column_separators and text == '|' then
+        text = ' | '
+        width = 3
+      end
+
       if r == 1 then
         if c == 1 then _, indent = col:start() end
         widths[c] = width
+      elseif r == delimiter_row then
+        -- Do nothing
       else
         widths[c] = math.max(width, widths[c])
       end
-
-      if config.padd_column_separators and text == '|' then text = ' | ' end
 
       rows[r][c] = text
     end
@@ -77,16 +85,20 @@ function Metadata:render()
         table.insert(line, string.rep(' ', self.indent))
       end
 
-      table.insert(line, col)
-
       local width = #col
       local max_width = self.widths[c]
 
-      -- The second row should always be the delimiter row
-      local padding = r == 2 and '-' or ' '
+      local padding = r == delimiter_row and '-' or ' '
 
-      if width < max_width and r == 2 or c < #self.widths then
-        table.insert(line, string.rep(padding, max_width - width))
+      if width < max_width then
+        table.insert(line, col)
+        if r == delimiter_row or c < #self.widths then
+          table.insert(line, string.rep(padding, max_width - width))
+        end
+      elseif width > max_width then
+        table.insert(line, string.sub(col, 1, max_width))
+      else
+        table.insert(line, col)
       end
 
       lines[r] = table.concat(line)
