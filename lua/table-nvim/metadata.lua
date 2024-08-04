@@ -82,8 +82,11 @@ function Metadata:render()
       local width = #col
       local max_width = self.widths[c]
 
+      -- The second row should always be the delimiter row
+      local padding = r == 2 and '-' or ' '
+
       if width < max_width then
-        table.insert(line, string.rep(' ', max_width - width))
+        table.insert(line, string.rep(padding, max_width - width))
       end
 
       lines[r] = table.concat(line)
