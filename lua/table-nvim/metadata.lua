@@ -1,6 +1,7 @@
 local ts = vim.treesitter
 
-local get_config = require('table-nvim.config').get_config
+local utils = require('table-nvim.utils')
+local conf = require('table-nvim.config')
 
 -- The second row should always be the delimiter row
 local delimiter_row = 2
@@ -17,9 +18,9 @@ local Metadata = {}
 ---@param root TSNode The root node of a table.
 ---@return Metadata
 function Metadata:new(root)
-  assert(root:type() == 'pipe_table', 'not a table root node')
+  assert(utils.is_tbl_root(root), 'not a table root node')
 
-  local config = get_config()
+  local config = conf.get_config()
 
   local start = root:start();
   local end_ = root:end_();
