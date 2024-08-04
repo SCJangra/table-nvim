@@ -1,5 +1,7 @@
 local ts = vim.treesitter
 
+local get_config = require('table-nvim.config').get_config
+
 ---@class (exact) Metadata metadata related to a markdown table.
 ---@field start number Index of the first row in the table.
 ---@field end_ number Index of the last row in the table.
@@ -13,6 +15,8 @@ local Metadata = {}
 ---@return Metadata
 function Metadata:new(root)
   assert(root:type() == 'pipe_table', 'not a table root node')
+
+  local config = get_config()
 
   local start = root:start();
   local end_ = root:end_();
@@ -38,6 +42,8 @@ function Metadata:new(root)
       else
         widths[c] = math.max(width, widths[c])
       end
+
+      if config.padd_column_separators and text == '|' then text = ' | ' end
 
       rows[r][c] = text
     end

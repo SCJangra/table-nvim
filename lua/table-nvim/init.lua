@@ -1,5 +1,6 @@
 local utils = require('table-nvim.utils')
 local Metadata = require('table-nvim.metadata')
+local conf = require('table-nvim.config')
 
 local api = vim.api
 local ts = vim.treesitter
@@ -18,3 +19,13 @@ api.nvim_create_autocmd({ 'InsertLeave' }, {
     api.nvim_buf_set_lines(0, m.start, m.end_, true, lines)
   end
 })
+
+---Setup the plugin.
+---@param config TableNvimConfig
+local setup = function(config)
+  conf.set_config(config)
+end
+
+return {
+  setup = setup
+}
