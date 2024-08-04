@@ -85,7 +85,7 @@ function Metadata:render()
       -- The second row should always be the delimiter row
       local padding = r == 2 and '-' or ' '
 
-      if width < max_width then
+      if width < max_width and r == 2 or c < #self.widths then
         table.insert(line, string.rep(padding, max_width - width))
       end
 
