@@ -1,9 +1,16 @@
 ---@class (exact) TableNvimConfig Configuration of this plugin.
 ---@field padd_column_separators boolean Insert a space around column separators.
+---@field mappings TableNvimMappings Keymappings.
+
+---@class (exact) TableNvimMappings Keymappings used in this plugin.
+---@field next string Go to next element.
 
 ---@type TableNvimConfig
 local uconf = {
   padd_column_separators = true,
+  mappings = {
+    next = '<TAB>'
+  }
 }
 
 ---Configure the plugin.

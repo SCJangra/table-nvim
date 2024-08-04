@@ -1,6 +1,7 @@
 local utils = require('table-nvim.utils')
 local Metadata = require('table-nvim.metadata')
 local conf = require('table-nvim.config')
+local maps = require('table-nvim.keymaps')
 
 local api = vim.api
 local ts = vim.treesitter
@@ -24,6 +25,7 @@ api.nvim_create_autocmd({ 'InsertLeavePre' }, {
 ---@param config TableNvimConfig
 local setup = function(config)
   conf.set_config(config)
+  maps.set_keymaps()
 end
 
 return {
