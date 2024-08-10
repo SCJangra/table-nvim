@@ -28,10 +28,8 @@ local get_node = function(node, row, col, next)
   if not root then return node end
 
   if not cell then
-    local row_start, col_start, row_end, col_end = root:range()
-
     local edge_column = utils.is_tbl_cell(node)
-    local edge_row = not utils.is_in_range(next and row + 1 or row - 1, col, row_start, col_start, row_end, col_end)
+    local edge_row = not ts.is_in_node_range(root, next and row + 1 or row - 1, col)
 
     if edge_column and edge_row then
       local row_count = root:named_child_count()
@@ -59,10 +57,7 @@ local get_node = function(node, row, col, next)
       return next_col or node
     elseif edge_row then
       for c in node:iter_children() do
-        local rs, cs, re, ce = c:range()
-        local in_range = utils.is_in_range(row, col, rs, cs, re, ce)
-
-        if in_range then
+        if ts.is_in_node_range(c, row, col) then
           return next and c:next_named_sibling() or c:prev_named_sibling() or node
         end
       end
@@ -76,10 +71,7 @@ local get_node = function(node, row, col, next)
   if row == r then return cell end
 
   for c in node:iter_children() do
-    local rs, cs, re, ce = c:range()
-    local in_range = utils.is_in_range(row, col, rs, cs, re, ce)
-
-    if in_range then
+    if ts.is_in_node_range(c, row, col) then
       local next_cell = get_named_sibling(c, next)
       if next_cell then return next_cell end
 
