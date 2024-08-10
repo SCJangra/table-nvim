@@ -14,8 +14,8 @@ local uconf = {
   mappings = {
     next = '<TAB>',
     prev = '<S-TAB>',
-    add_row_up = '<C-p>',
-    add_row_down = '<C-n>',
+    add_row_up = '<C-k>',
+    add_row_down = '<C-j>',
   }
 }
 
