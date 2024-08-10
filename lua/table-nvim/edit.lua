@@ -29,6 +29,16 @@ local add_row = function(up)
     end
   end
 
+  local first = new_row[1]
+  if first == '| ' then
+    first = '| x'
+  elseif first == '|' then
+    first = '|x'
+  else
+    first = 'x' .. string.sub(first, 2)
+  end
+  new_row[1] = first
+
   local r = row:start()
   r = up and r or r + 1
 
