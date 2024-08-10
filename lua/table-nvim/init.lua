@@ -7,6 +7,7 @@ local api = vim.api
 local ts = vim.treesitter
 
 local group_id = api.nvim_create_augroup('table-nvim', { clear = true })
+
 api.nvim_create_autocmd({ 'InsertLeave' }, {
   group = group_id,
   pattern = '*.md',
@@ -21,11 +22,16 @@ api.nvim_create_autocmd({ 'InsertLeave' }, {
   end
 })
 
+api.nvim_create_autocmd({ 'BufEnter' }, {
+  group = group_id,
+  pattern = '*.md',
+  callback = function(opts) maps.set_keymaps(opts.buf) end
+})
+
 ---Setup the plugin.
 ---@param config TableNvimConfig
 local setup = function(config)
   conf.set_config(config)
-  maps.set_keymaps()
 end
 
 return {
