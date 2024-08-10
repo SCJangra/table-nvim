@@ -7,7 +7,7 @@ local api = vim.api
 local ts = vim.treesitter
 
 local group_id = api.nvim_create_augroup('table-nvim', { clear = true })
-api.nvim_create_autocmd({ 'InsertLeavePre' }, {
+api.nvim_create_autocmd({ 'InsertLeave' }, {
   group = group_id,
   pattern = '*.md',
   callback = function()
