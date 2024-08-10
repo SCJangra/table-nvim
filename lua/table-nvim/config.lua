@@ -3,13 +3,15 @@
 ---@field mappings TableNvimMappings Keymappings.
 
 ---@class (exact) TableNvimMappings Keymappings used in this plugin.
----@field next string Go to next element.
+---@field next string Go to next cell.
+---@field prev string Go to prev cell.
 
 ---@type TableNvimConfig
 local uconf = {
   padd_column_separators = true,
   mappings = {
-    next = '<TAB>'
+    next = '<TAB>',
+    prev = '<S-TAB>'
   }
 }
 
