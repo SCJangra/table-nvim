@@ -50,7 +50,7 @@ function Formatter:new(root)
       elseif r == delimiter_row then
         -- Do nothing
       else
-        widths[c] = math.max(width, widths[c])
+        widths[c] = math.max(width, widths[c] or 0)
       end
 
       rows[r][c] = text
