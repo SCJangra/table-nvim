@@ -30,6 +30,7 @@ function Formatter:new(root)
   local r = 0
   for row in root:iter_children() do
     r = r + 1
+    local c_count = row:child_count()
     rows[r] = {}
 
     local c = 0
@@ -40,8 +41,15 @@ function Formatter:new(root)
       local width = #text
 
       if config.padd_column_separators and text == '|' then
-        text = ' | '
-        width = 3
+        if c == 1 then
+          text = '| '
+        elseif c == c_count then
+          text = ' |'
+        else
+          text = ' | '
+        end
+
+        width = #text
       end
 
       if r == 1 then
