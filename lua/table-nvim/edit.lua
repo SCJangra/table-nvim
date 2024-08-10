@@ -17,27 +17,33 @@ local add_row = function(up)
   if not row then return end
 
   local new_row = {}
+  local last_pipe = -1
   for col in row:iter_children() do
-    local _, start, _, end_ = col:range()
-    local width = end_ - start
+    local _, start = col:start()
 
     if col:type() == '|' then
-      local text = config.padd_column_separators and '| ' or '|'
-      table.insert(new_row, text)
-    else
-      table.insert(new_row, string.rep(' ', width))
+      local spaces = string.rep(' ', start - 1 - last_pipe)
+      if spaces ~= '' then table.insert(new_row, spaces) end
+      table.insert(new_row, '|')
+      last_pipe = start
     end
   end
 
   local first = new_row[1]
-  if first == '| ' then
-    first = '| x'
-  elseif first == '|' then
-    first = '|x'
+  local second = new_row[2]
+  if first == '|' then
+    if config.padd_column_separators then
+      first = '| x'
+      if second then second = string.sub(second, 3) end
+    else
+      first = '|x'
+      if second then second = string.sub(second, 2) end
+    end
   else
     first = 'x' .. string.sub(first, 2)
   end
   new_row[1] = first
+  new_row[2] = second
 
   local r = row:start()
   r = up and r or r + 1
