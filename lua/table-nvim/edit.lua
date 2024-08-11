@@ -29,6 +29,7 @@ local add_row = function(up)
     end
   end
 
+  -- Insert an 'x' at the first column of the new row
   local first = new_row[1]
   local second = new_row[2]
   if first == '|' then
@@ -44,6 +45,22 @@ local add_row = function(up)
   end
   new_row[1] = first
   new_row[2] = second
+
+  -- Insert an 'x' at the last column of the new row.
+  local col_count = row:child_count()
+  local col_count_new = #new_row
+  if col_count == col_count_new then
+    local second_last = new_row[col_count_new - 1]
+    if second_last and config.padd_column_separators then
+      second_last = ' x' .. string.sub(second_last, 3)
+    elseif second_last then
+      second_last = 'x' .. string.sub(second_last, 2)
+    end
+    new_row[col_count_new - 1] = second_last
+  else
+    local x = config.padd_column_separators and ' x' or 'x'
+    new_row[col_count_new + 1] = x
+  end
 
   local r = row:start()
   r = up and r or r + 1
