@@ -1,4 +1,5 @@
 local ts = vim.treesitter
+local api = vim.api
 
 local utils = require('table-nvim.utils')
 local conf = require('table-nvim.config')
@@ -12,6 +13,7 @@ local delimiter_row = 2
 ---@field indent number Indentation of the table.
 ---@field rows string[][] Rows in the table, each row is an array of strings.
 ---@field widths number[] Widths of each column of the table.
+---@field cursor_col number The current column position of the cursor.
 local Formatter = {}
 
 ---@param root TSNode The root node of a table.
@@ -21,11 +23,15 @@ function Formatter:new(root)
 
   local config = conf.get_config()
 
+  local cursor_pos = api.nvim_win_get_cursor(0)
+  local cursor_row, cursor_col = cursor_pos[1] - 1, cursor_pos[2]
+
   local start = root:start();
   local end_ = root:end_();
   local indent
   local widths = {}
   local rows = {}
+  local cursor_col_index = 1
 
   local r = 0
   for row in root:iter_children() do
@@ -39,6 +45,8 @@ function Formatter:new(root)
 
       local text = ts.get_node_text(col, 0):match('^%s*(.-)%s*$')
       local width = #text
+
+      if ts.is_in_node_range(col, cursor_row, cursor_col) then cursor_col_index = c end
 
       if config.padd_column_separators and text == '|' then
         if c == 1 then
@@ -72,7 +80,8 @@ function Formatter:new(root)
     end_ = end_,
     indent = indent,
     widths = widths,
-    rows = rows
+    rows = rows,
+    cursor_col = cursor_col_index,
   }
 
   ---@diagnostic disable-next-line: inject-field
