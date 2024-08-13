@@ -7,14 +7,8 @@ local conf = require('table-nvim.config')
 -- The second row should always be the delimiter row
 local delimiter_row = 2
 
----@enum ColumnType
-local ColumnType = {
-  Delimiter = 0,
-  Regular = 1,
-}
-
 ---@class (exact) ColumnInfo Information about a column in the table, including the delimiter (`|`) columns.
----@field type ColumnType Type of the column.
+---@field is_delimiter boolean Is this a delimiter column.
 ---@field width number Text width of the column.
 
 ---@class (exact) Formatter Provides functionality to format markdown tables.
@@ -60,11 +54,7 @@ function Formatter:new(root)
 
       if ts.is_in_node_range(col, cursor_row, cursor_col) then cursor_col_index = c end
 
-      if type == '|' then
-        cols[c].type = ColumnType.Delimiter
-      else
-        cols[c].type = ColumnType.Regular
-      end
+      cols[c].is_delimiter = type == '|'
 
       if config.padd_column_separators and type == '|' then
         if c == 1 then
@@ -81,7 +71,6 @@ function Formatter:new(root)
       if r == 1 then
         if c == 1 then _, indent = col:start() end
         cols[c].width = width
-        print('First row and', r, 'column', c, 'with width', width)
       elseif r == delimiter_row then
         -- Do nothing
       else
@@ -113,8 +102,6 @@ end
 function Formatter:render()
   local lines = {}
 
-  vim.print(self)
-
   for r, row in ipairs(self.rows) do
     local line = {}
 
@@ -144,6 +131,86 @@ function Formatter:render()
   end
 
   return lines
+end
+
+function Formatter:get_delimiter()
+  return conf.get_config().padd_column_separators and ' | ' or '|'
+end
+
+---Extend a row (to a given length) by inserting new columns at the end.
+---@param row string[] The row to extend.
+---@param len number The length to extend to.
+function Formatter:extend_row_to(row, len)
+  for index = #row + 1, len do
+    local val = self.cols[index - 1].is_delimiter and ' ' or self:get_delimiter()
+    row[index] = val
+  end
+end
+
+---Generate new column data, to be inserted at `index`.
+---@param row number The row in which this column will be inserted.
+---@param column number The column at which this column will be inserted.
+---@return string
+---@return boolean
+---@return string
+---@return boolean
+function Formatter:gen_column_for(row, column)
+  local left = self.cols[column - 1]
+  local current = self.cols[column]
+
+  local left_is_delimiter = left and left.is_delimiter or nil
+  local current_is_delimiter = current and current.is_delimiter or nil
+
+  local text = function()
+    if row == 1 then
+      return 'x'
+    elseif row == delimiter_row then
+      return '-'
+    else
+      return ' '
+    end
+  end
+
+  if left == nil and current_is_delimiter then
+    return text(), false, self:get_delimiter(), true
+  elseif left == nil and not current_is_delimiter then
+    return self:get_delimiter(), true, text(), false
+  elseif left and left_is_delimiter then
+    return self:get_delimiter(), true, text(), false
+  elseif left and not left_is_delimiter then
+    return text(), false, self:get_delimiter(), true
+  else
+    -- This branch should be unreachable.
+    ---@diagnostic disable-next-line: missing-return
+  end
+end
+
+---Insert a column to the table at the given index.
+---@param index number The index at which to add the column.
+function Formatter:insert_column_at(index)
+  for i, row in ipairs(self.rows) do
+    self:extend_row_to(row, index - 1)
+
+    local first, _, second, _ = self:gen_column_for(i, index)
+
+    table.insert(row, index, first)
+    table.insert(row, index, second)
+  end
+
+  local first, first_delimiter, second, second_delimiter = self:gen_column_for(1, index)
+
+  table.insert(self.cols, index, { is_delimiter = first_delimiter, width = #first })
+  table.insert(self.cols, index, { is_delimiter = second_delimiter, width = #second })
+end
+
+---Insert a column to the left of current column.
+function Formatter:insert_column_left()
+  self:insert_column_at(self.cursor_col)
+end
+
+---Insert a column to the left of current column.
+function Formatter:insert_column_right()
+  self:insert_column_at(self.cursor_col + 1)
 end
 
 return Formatter

@@ -3,6 +3,25 @@ local api = vim.api
 
 local utils = require('table-nvim.utils')
 local conf = require('table-nvim.config')
+local Formatter = require('table-nvim.formatter')
+
+---Add a new column to the table.
+---@param left boolean If `true` the column is added to the left of current column, and to the right otherwise.
+local add_column = function(left)
+  local root = utils.get_tbl_root(ts.get_node());
+  if not root then return end
+
+  local f = Formatter:new(root)
+
+  if left then f:insert_column_left() else f:insert_column_right() end
+
+  local lines = f:render()
+
+  api.nvim_buf_set_lines(0, f.start, f.end_, true, lines)
+end
+
+local add_column_left = function() add_column(true) end
+local add_column_right = function() add_column(false) end
 
 ---Add a row to the table.
 ---@param up boolean If `true`, the row is added above current row, and below otherwise.
@@ -74,4 +93,6 @@ local add_row_up = function() add_row(true) end
 return {
   add_row_down = add_row_down,
   add_row_up = add_row_up,
+  add_column_left = add_column_left,
+  add_column_right = add_column_right,
 }

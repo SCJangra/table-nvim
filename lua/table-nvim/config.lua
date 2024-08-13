@@ -7,6 +7,8 @@
 ---@field prev string Go to prev cell.
 ---@field add_row_up string Add a row above the current row.
 ---@field add_row_down string Add a row below the current row.
+---@field add_column_left string Add a row to the left of current column.
+---@field add_column_right string Add a row to the right of current column.
 
 ---@type TableNvimConfig
 local uconf = {
@@ -16,6 +18,8 @@ local uconf = {
     prev = '<S-TAB>',
     add_row_up = '<C-k>',
     add_row_down = '<C-j>',
+    add_column_left = '<C-h>',
+    add_column_right = '<C-l>',
   }
 }
 
