@@ -2,6 +2,7 @@ local ts = vim.treesitter
 local api = vim.api
 
 local utils = require('table-nvim.utils')
+local conf = require('table-nvim.config')
 
 ---Returns next or previous named sibling.
 ---@param node TSNode The node for which to get the sibling.
@@ -103,10 +104,28 @@ local move = function(next)
   api.nvim_win_set_cursor(0, { row + 1, col })
 end
 
-local next = function() move(true) end
-local prev = function() move(false) end
+local next = function()
+  local node = ts.get_node()
+
+  if not node or not utils.is_tbl_node(node) then
+    return conf.get_config().mappings.next
+  else
+    return '<CMD>lua require("table-nvim.nav").move(true)<CR>'
+  end
+end
+
+local prev = function()
+  local node = ts.get_node()
+
+  if not node or not utils.is_tbl_node(node) then
+    return conf.get_config().mappings.prev
+  else
+    return '<CMD>lua require("table-nvim.nav").move(false)<CR>'
+  end
+end
 
 return {
   next = next,
   prev = prev,
+  move = move,
 }
