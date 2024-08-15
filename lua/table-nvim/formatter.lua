@@ -166,6 +166,10 @@ function Formatter:gen_column_for(row, column)
       return 'x'
     elseif row == delimiter_row then
       return '-'
+    elseif column == 1 then
+      return 'x'
+    elseif column == #self.cols + 1 then
+      return 'x'
     else
       return ' '
     end
