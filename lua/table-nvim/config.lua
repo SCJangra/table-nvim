@@ -16,10 +16,10 @@ local uconf = {
   mappings = {
     next = '<TAB>',
     prev = '<S-TAB>',
-    add_row_up = '<C-k>',
-    add_row_down = '<C-j>',
-    add_column_left = '<C-h>',
-    add_column_right = '<C-l>',
+    add_row_up = '<A-k>',
+    add_row_down = '<A-j>',
+    add_column_left = '<A-h>',
+    add_column_right = '<A-l>',
   }
 }
 
