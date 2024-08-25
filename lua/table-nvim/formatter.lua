@@ -133,8 +133,16 @@ function Formatter:render()
   return lines
 end
 
-function Formatter:get_delimiter()
-  return conf.get_config().padd_column_separators and ' | ' or '|'
+---Get delimiter for the given column
+---@param column number
+function Formatter:get_delimiter(column)
+  local padd = conf.get_config().padd_column_separators
+
+  if column == 1 then return padd and '| ' or '|' end
+
+  if column == #self.cols + 1 then return padd and ' |' or '|' end
+
+  return padd and ' | ' or '|'
 end
 
 ---Extend a row (to a given length) by inserting new columns at the end.
@@ -142,7 +150,7 @@ end
 ---@param len number The length to extend to.
 function Formatter:extend_row_to(row, len)
   for index = #row + 1, len do
-    local val = self.cols[index - 1].is_delimiter and ' ' or self:get_delimiter()
+    local val = self.cols[index - 1].is_delimiter and ' ' or self:get_delimiter(index)
     row[index] = val
   end
 end
@@ -162,27 +170,29 @@ function Formatter:gen_column_for(row, column)
   local current_is_delimiter = current and current.is_delimiter or nil
 
   local text = function()
-    if row == 1 then
-      return 'x'
-    elseif row == delimiter_row then
-      return '-'
-    elseif column == 1 then
-      return 'x'
-    elseif column == #self.cols + 1 then
-      return 'x'
-    else
-      return ' '
+    if column == 1 then
+      if row == delimiter_row then return '- ' else return 'x ' end
     end
+
+    if column == #self.cols + 1 then
+      if row == delimiter_row then return ' -' end
+      return ' x'
+    end
+
+    if row == 1 then return 'x' end
+    if row == delimiter_row then return '-' end
+
+    return ' '
   end
 
   if left == nil and current_is_delimiter then
-    return text(), false, self:get_delimiter(), true
+    return text(), false, self:get_delimiter(column), true
   elseif left == nil and not current_is_delimiter then
-    return self:get_delimiter(), true, text(), false
+    return self:get_delimiter(column), true, text(), false
   elseif left and left_is_delimiter then
-    return self:get_delimiter(), true, text(), false
+    return self:get_delimiter(column), true, text(), false
   elseif left and not left_is_delimiter then
-    return text(), false, self:get_delimiter(), true
+    return text(), false, self:get_delimiter(column), true
   else
     -- This branch should be unreachable.
     ---@diagnostic disable-next-line: missing-return
