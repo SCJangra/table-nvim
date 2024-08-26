@@ -18,6 +18,8 @@ local set_keymaps = function(buf)
   map({ 'n', 'i' }, maps.add_row_up, edit.add_row_up, opts)
   map({ 'n', 'i' }, maps.add_column_left, edit.add_column_left, opts)
   map({ 'n', 'i' }, maps.add_column_right, edit.add_column_right, opts)
+  map({ 'n', 'i' }, maps.insert_table, edit.insert_table, opts)
+  map({ 'n', 'i' }, maps.insert_table_alt, edit.insert_table_alt, opts)
 end
 
 return {

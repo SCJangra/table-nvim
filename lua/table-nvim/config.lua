@@ -9,6 +9,8 @@
 ---@field add_row_down string Add a row below the current row.
 ---@field add_column_left string Add a row to the left of current column.
 ---@field add_column_right string Add a row to the right of current column.
+---@field insert_table string Insert a new table.
+---@field insert_table_alt string Insert a new table that is not surrounded by pipes.
 
 ---@type TableNvimConfig
 local uconf = {
@@ -20,6 +22,8 @@ local uconf = {
     add_row_down = '<A-j>',
     add_column_left = '<A-h>',
     add_column_right = '<A-l>',
+    insert_table = '<A-t>',
+    insert_table_alt = '<A-S-t>'
   }
 }
 

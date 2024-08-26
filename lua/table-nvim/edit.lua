@@ -90,9 +90,23 @@ end
 local add_row_down = function() add_row(false) end
 local add_row_up = function() add_row(true) end
 
+local insert_table = function()
+  local row = api.nvim_win_get_cursor(0)[1] - 1
+  local lines = utils.gen_table()
+  api.nvim_buf_set_lines(0, row, row + 1, true, lines)
+end
+
+local insert_table_alt = function()
+  local row = api.nvim_win_get_cursor(0)[1] - 1
+  local lines = utils.gen_table_alt()
+  api.nvim_buf_set_lines(0, row, row + 1, true, lines)
+end
+
 return {
   add_row_down = add_row_down,
   add_row_up = add_row_up,
   add_column_left = add_column_left,
   add_column_right = add_column_right,
+  insert_table = insert_table,
+  insert_table_alt = insert_table_alt,
 }
