@@ -19,6 +19,7 @@ use {
 
 # Default config
 ```lua
+{
   padd_column_separators = true,  -- Insert a space around column separators
   mappings = {
     next = '<TAB>',               -- Go to next cell
