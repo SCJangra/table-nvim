@@ -174,9 +174,16 @@ function Formatter:gen_column_for(row, column)
       if row == delimiter_row then return '- ' else return 'x ' end
     end
 
+    if column == 2 and left_is_delimiter then
+      if row == delimiter_row then return '-' else return 'x' end
+    end
+
+    if column == #self.cols and current_is_delimiter then
+      if row == delimiter_row then return '-' else return 'x' end
+    end
+
     if column == #self.cols + 1 then
-      if row == delimiter_row then return ' -' end
-      return ' x'
+      if row == delimiter_row then return ' -' else return ' x' end
     end
 
     if row == 1 then return 'x' end
