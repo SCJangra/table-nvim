@@ -1,5 +1,5 @@
 local utils = require('table-nvim.utils')
-local Formatter = require('table-nvim.formatter')
+local MdTable = require('table-nvim.md_table')
 local conf = require('table-nvim.config')
 local maps = require('table-nvim.keymaps')
 
@@ -15,7 +15,7 @@ api.nvim_create_autocmd({ 'InsertLeave' }, {
     local root = utils.get_tbl_root(ts.get_node());
     if not root then return end
 
-    local m = Formatter:new(root)
+    local m = MdTable:new(root)
     local lines = m:render()
 
     api.nvim_buf_set_lines(0, m.start, m.end_, true, lines)

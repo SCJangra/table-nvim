@@ -73,6 +73,18 @@ local gen_table = function()
   }
 end
 
+---Iterate of all children of a treesitter node.
+---@param node TSNode
+---@return fun(): integer?, TSNode?
+local iter_children = function(node)
+  local n = node:child_count()
+  local i = -1
+  return function()
+    i = i + 1
+    if i < n then return i + 1, node:child(i) end
+  end
+end
+
 return {
   get_tbl_root = get_tbl_root,
   is_tbl_root = is_tbl_root,
@@ -80,4 +92,5 @@ return {
   is_tbl_cell = is_tbl_cell,
   gen_table = gen_table,
   gen_table_alt = gen_table_alt,
+  iter_children = iter_children,
 }
