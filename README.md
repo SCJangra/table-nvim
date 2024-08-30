@@ -2,7 +2,7 @@
 A simple (for now?) markdown table editor that formats the table as you type.
 
 # Demo
-https://github.com/user-attachments/assets/f015f23f-d53b-4228-a6f8-5c7af259bfc8
+https://github.com/user-attachments/assets/b026dc0b-4f10-48cc-81cb-3edf0f3e7772
 
 # Dependencies
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
