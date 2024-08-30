@@ -4,26 +4,26 @@
 
 ---@class (exact) TableNvimMappings Keymappings used in this plugin.
 ---@field next string Go to next cell.
----@field prev string Go to prev cell.
----@field add_row_up string Add a row above the current row.
----@field add_row_down string Add a row below the current row.
----@field add_column_left string Add a row to the left of current column.
----@field add_column_right string Add a row to the right of current column.
+---@field prev string Go to previous cell.
+---@field insert_row_up string Insert a row above the current row.
+---@field insert_row_down string Insert a row below the current row.
+---@field insert_column_left string Insert a column to the left of current column.
+---@field insert_column_right string Insert a column to the right of current column.
 ---@field insert_table string Insert a new table.
 ---@field insert_table_alt string Insert a new table that is not surrounded by pipes.
 
 ---@type TableNvimConfig
 local uconf = {
-  padd_column_separators = true,
+  padd_column_separators = true,   -- Insert a space around column separators.
   mappings = {
-    next = '<TAB>',
-    prev = '<S-TAB>',
-    add_row_up = '<A-k>',
-    add_row_down = '<A-j>',
-    add_column_left = '<A-h>',
-    add_column_right = '<A-l>',
-    insert_table = '<A-t>',
-    insert_table_alt = '<A-S-t>'
+    next = '<TAB>',                -- Go to next cell.
+    prev = '<S-TAB>',              -- Go to previous cell.
+    insert_row_up = '<A-k>',       -- Insert a row above the current row.
+    insert_row_down = '<A-j>',     -- Insert a row below the current row.
+    insert_column_left = '<A-h>',  -- Insert a column to the left of current column.
+    insert_column_right = '<A-l>', -- Insert a column to the right of current column.
+    insert_table = '<A-t>',        -- Insert a new table.
+    insert_table_alt = '<A-S-t>'   -- Insert a new table that is not surrounded by pipes.
   }
 }
 

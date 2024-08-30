@@ -20,16 +20,16 @@ use {
 # Default config
 ```lua
 {
-  padd_column_separators = true,  -- Insert a space around column separators
+  padd_column_separators = true,   -- Insert a space around column separators.
   mappings = {
-    next = '<TAB>',               -- Go to next cell
-    prev = '<S-TAB>',             -- Go to prev cell
-    add_row_up = '<A-k>',         -- Add a row above the current row
-    add_row_down = '<A-j>',       -- Add a row below the current row
-    add_column_left = '<A-h>',    -- Add a column to the left of current column
-    add_column_right = '<A-l>',   -- Add a column to the right of current column
-    insert_table = '<A-t>',       -- Insert a new table
-    insert_table_alt = '<A-S-t>', -- Insert a new table that is not surrounded by pipes
+    next = '<TAB>',                -- Go to next cell.
+    prev = '<S-TAB>',              -- Go to previous cell.
+    insert_row_up = '<A-k>',       -- Insert a row above the current row.
+    insert_row_down = '<A-j>',     -- Insert a row below the current row.
+    insert_column_left = '<A-h>',  -- Insert a column to the left of current column.
+    insert_column_right = '<A-l>', -- Insert a column to the right of current column.
+    insert_table = '<A-t>',        -- Insert a new table.
+    insert_table_alt = '<A-S-t>'   -- Insert a new table that is not surrounded by pipes.
   }
 }
 ```

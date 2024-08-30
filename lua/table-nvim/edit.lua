@@ -6,7 +6,7 @@ local MdTable = require('table-nvim.md_table')
 
 ---Add a new column to the table.
 ---@param left boolean If `true` the column is added to the left of current column, and to the right otherwise.
-local add_column = function(left)
+local insert_column = function(left)
   local root = utils.get_tbl_root(ts.get_node());
   if not root then return end
 
@@ -19,8 +19,8 @@ local add_column = function(left)
   api.nvim_buf_set_lines(0, t.start, t.end_, true, lines)
 end
 
-local add_column_left = function() add_column(true) end
-local add_column_right = function() add_column(false) end
+local insert_column_left = function() insert_column(true) end
+local insert_column_right = function() insert_column(false) end
 
 ---Insert a new column to the table.
 ---@param up boolean If `true` the row is insert above current row, and below otherwise.
@@ -57,8 +57,8 @@ return {
   insert_row_up = insert_row_up,
   insert_row_down = insert_row_down,
 
-  add_column_left = add_column_left,
-  add_column_right = add_column_right,
+  insert_column_left = insert_column_left,
+  insert_column_right = insert_column_right,
   insert_table = insert_table,
   insert_table_alt = insert_table_alt,
 }
