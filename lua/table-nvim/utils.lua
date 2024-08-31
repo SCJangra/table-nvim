@@ -1,6 +1,8 @@
 local tbl_node = 'pipe_table'
 local tbl_cell = 'pipe_table_cell'
 local tbl_delimiter_cell = 'pipe_table_delimiter_cell'
+local tbl_align_left = 'pipe_table_align_left'
+local tbl_align_right = 'pipe_table_align_right'
 local tbl_node_len = #tbl_node
 
 local api = vim.api
@@ -31,10 +33,16 @@ local get_tbl_root = function(node)
   end
 end
 
----Returns `true` if the provided node is a table cell and `false` otherwise.
+---Returns `true` if the provided node is a table cell, and `false` otherwise.
 local is_tbl_cell = function(node)
   local type = node:type()
   return type == tbl_cell or type == tbl_delimiter_cell
+end
+
+---Returns `true` if the provided node is an alignment node, and `false` otherwise.
+local is_tbl_align = function(node)
+  local type = node:type()
+  return type == tbl_align_left or type == tbl_align_right
 end
 
 ---Returns rows for a new table that is not surrounded by pipes.
@@ -90,6 +98,7 @@ return {
   is_tbl_root = is_tbl_root,
   is_tbl_node = is_tbl_node,
   is_tbl_cell = is_tbl_cell,
+  is_tbl_align = is_tbl_align,
   gen_table = gen_table,
   gen_table_alt = gen_table_alt,
   iter_children = iter_children,

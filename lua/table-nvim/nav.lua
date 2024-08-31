@@ -23,10 +23,12 @@ end
 ---@param next boolean Whether to get the next or previous node.
 ---@return TSNode
 local get_node = function(node, row, col, next)
-  local cell = get_named_sibling(node, next)
-
   local root = utils.get_tbl_root(node)
   if not root then return node end
+
+  if utils.is_tbl_align(node) then node = node:parent() or node end
+
+  local cell = get_named_sibling(node, next)
 
   if not cell then
     local edge_column = utils.is_tbl_cell(node)
