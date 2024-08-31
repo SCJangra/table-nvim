@@ -39,8 +39,8 @@ function MdTable:new(root)
   local indent
   local cols = {}
   local rows = {}
-  local cursor_col_index = 1
-  local cursor_row_index = 1
+  local cursor_col_index = nil
+  local cursor_row_index = nil
 
   for r, row in utils.iter_children(root) do
     local c_count = row:child_count()
@@ -53,7 +53,11 @@ function MdTable:new(root)
       local width = #text
       local type = self:cell_type(text)
 
-      if ts.is_in_node_range(col, cursor_row, cursor_col) then cursor_row_index, cursor_col_index = r, c end
+      -- Set the current column position of the cursor in the table.
+      local end_row, end_col = col:end_()
+      if not cursor_col_index and cursor_row == end_row and cursor_col < end_col then
+        cursor_row_index, cursor_col_index = r, c
+      end
 
       cols[c].is_delimiter = type == C.CELL_PIPE
 
@@ -97,8 +101,8 @@ function MdTable:new(root)
     indent = indent,
     cols = cols,
     rows = rows,
-    cursor_col = cursor_col_index,
-    cursor_row = cursor_row_index,
+    cursor_col = cursor_col_index or 1,
+    cursor_row = cursor_row_index or 1,
     root = root,
   }
 
