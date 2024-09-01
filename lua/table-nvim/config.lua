@@ -14,7 +14,7 @@
 
 ---@type TableNvimConfig
 local uconf = {
-  padd_column_separators = true,   -- Insert a space around column separators.
+  padd_column_separators = false,  -- Insert a space around column separators.
   mappings = {
     next = '<TAB>',                -- Go to next cell.
     prev = '<S-TAB>',              -- Go to previous cell.

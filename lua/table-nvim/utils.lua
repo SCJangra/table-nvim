@@ -5,7 +5,6 @@ local tbl_align_left = 'pipe_table_align_left'
 local tbl_align_right = 'pipe_table_align_right'
 local tbl_node_len = #tbl_node
 
-local api = vim.api
 local conf = require('table-nvim.config')
 
 ---Returns `true` if the node is the root of a markdown table and `false` otherwise.
@@ -25,6 +24,8 @@ end
 local get_tbl_root = function(node)
   if node == nil then return nil end
   if string.sub(node:type(), 1, tbl_node_len) ~= tbl_node then return nil end
+
+  if is_tbl_root(node) then return node end
 
   while true do
     node = node:parent()
@@ -93,6 +94,18 @@ local iter_children = function(node)
   end
 end
 
+---Iterate of all named children of a treesitter node.
+---@param node TSNode
+---@return fun(): integer?, TSNode?
+local iter_named_children = function(node)
+  local n = node:named_child_count()
+  local i = -1
+  return function()
+    i = i + 1
+    if i < n then return i + 1, node:named_child(i) end
+  end
+end
+
 return {
   get_tbl_root = get_tbl_root,
   is_tbl_root = is_tbl_root,
@@ -102,4 +115,5 @@ return {
   gen_table = gen_table,
   gen_table_alt = gen_table_alt,
   iter_children = iter_children,
+  iter_named_children = iter_named_children,
 }
