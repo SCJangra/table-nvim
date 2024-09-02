@@ -9,8 +9,10 @@ https://github.com/user-attachments/assets/b026dc0b-4f10-48cc-81cb-3edf0f3e7772
 - that's it!
 
 # Install
+
+Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua
-use {
+{
   'SCJangra/table-nvim',
   ft = 'markdown',
   opts = {},
