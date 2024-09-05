@@ -105,20 +105,20 @@ function MdTable:new(root)
   return setmetatable(m, self)
 end
 
----Renders the table into an array of lines
+---Generate an array of formatted rows.
 ---@return string[]
-function MdTable:render()
+function MdTable:generate_rows()
   local lines = {}
 
-  for index = 1, #self.rows do lines[index] = self:render_row(index) end
+  for index = 1, #self.rows do lines[index] = self:generate_row(index) end
 
   return lines
 end
 
----Renders a particular row into a string.
----@param index number The index of the row to render.
+---Generate a single formatted row.
+---@param index number The index of the row to generate.
 ---@return string
-function MdTable:render_row(index)
+function MdTable:generate_row(index)
   local padd = conf.get_config().padd_column_separators
   local line = {}
   local row = self.rows[index]

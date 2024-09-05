@@ -14,7 +14,7 @@ local insert_column = function(left)
 
   if left then t:insert_column_left() else t:insert_column_right() end
 
-  local lines = t:render()
+  local lines = t:generate_rows()
 
   api.nvim_buf_set_lines(0, t.start, t.end_, true, lines)
 end
@@ -32,7 +32,7 @@ local insert_row = function(up)
 
   local index = up and t:insert_row_up() or t:insert_row_down()
 
-  local row = t:render_row(index)
+  local row = t:generate_row(index)
   local r = t.start + index - 1
 
   api.nvim_buf_set_lines(0, r, r, true, { row })
