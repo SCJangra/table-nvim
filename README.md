@@ -23,7 +23,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua
 {
   padd_column_separators = true,   -- Insert a space around column separators.
-  mappings = {
+  mappings = {                     -- All mappings work in Normal and Insert modes.
     next = '<TAB>',                -- Go to next cell.
     prev = '<S-TAB>',              -- Go to previous cell.
     insert_row_up = '<A-k>',       -- Insert a row above the current row.
@@ -31,7 +31,8 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
     insert_column_left = '<A-h>',  -- Insert a column to the left of current column.
     insert_column_right = '<A-l>', -- Insert a column to the right of current column.
     insert_table = '<A-t>',        -- Insert a new table.
-    insert_table_alt = '<A-S-t>'   -- Insert a new table that is not surrounded by pipes.
+    insert_table_alt = '<A-S-t>',  -- Insert a new table that is not surrounded by pipes.
+    delete_column = '<A-d>',       -- Delete the column under cursor.
   }
 }
 ```
