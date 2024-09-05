@@ -15,10 +15,7 @@ api.nvim_create_autocmd({ 'InsertLeave' }, {
     local root = utils.get_tbl_root(ts.get_node());
     if not root then return end
 
-    local m = MdTable:new(root)
-    local lines = m:generate_rows()
-
-    api.nvim_buf_set_lines(0, m.start, m.end_, true, lines)
+    MdTable:new(root):render()
   end
 })
 

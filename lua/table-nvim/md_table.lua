@@ -293,4 +293,19 @@ function MdTable:insert_row_down()
   return self:insert_row_at(self.cursor_row + 1)
 end
 
+---Render the table to the buffer.
+function MdTable:render()
+  local rows = self:generate_rows()
+  api.nvim_buf_set_lines(0, self.start, self.end_, true, rows)
+end
+
+---Render a specific row (likely a newly inserted row) to the table.
+---This will not replace an existing row, but insert a new one at the given index.
+---@param index number The row index to render.
+function MdTable:render_row(index)
+  local row = self:generate_row(index)
+  local r = self.start + index - 1
+  api.nvim_buf_set_lines(0, r, r, true, { row })
+end
+
 return MdTable
