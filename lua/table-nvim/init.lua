@@ -10,7 +10,7 @@ local group_id = api.nvim_create_augroup('table-nvim', { clear = true })
 
 api.nvim_create_autocmd({ 'InsertLeave' }, {
   group = group_id,
-  pattern = '*.md',
+  pattern = { '*.md', '*.mdx' },
   callback = function()
     local root = utils.get_tbl_root(ts.get_node());
     if not root then return end
@@ -24,7 +24,7 @@ api.nvim_create_autocmd({ 'InsertLeave' }, {
 
 api.nvim_create_autocmd({ 'BufEnter' }, {
   group = group_id,
-  pattern = '*.md',
+  pattern = { '*.md', '*.mdx' },
   callback = function(opts) maps.set_keymaps(opts.buf) end
 })
 
