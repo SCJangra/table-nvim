@@ -295,6 +295,11 @@ end
 
 ---Render the table to the buffer.
 function MdTable:render()
+  if vim.tbl_isempty(self.cols) then
+    api.nvim_buf_set_lines(0, self.start, self.end_, true, {})
+    return
+  end
+
   local rows = self:generate_rows()
   api.nvim_buf_set_lines(0, self.start, self.end_, true, rows)
 end
@@ -306,6 +311,15 @@ function MdTable:render_row(index)
   local row = self:generate_row(index)
   local r = self.start + index - 1
   api.nvim_buf_set_lines(0, r, r, true, { row })
+end
+
+---Delete the column under cursor.
+function MdTable:delete_current_column()
+  local index = self.cursor_col
+  local len = #self.cols
+
+  for _, row in ipairs(self.rows) do table.remove(row, index) end
+  for i = index, len do self.cols[i] = self.cols[i + 1] end
 end
 
 return MdTable

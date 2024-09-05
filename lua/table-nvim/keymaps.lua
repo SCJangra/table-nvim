@@ -20,6 +20,7 @@ local set_keymaps = function(buf)
   map({ 'n', 'i' }, maps.insert_column_right, edit.insert_column_right, opts)
   map({ 'n', 'i' }, maps.insert_table, edit.insert_table, opts)
   map({ 'n', 'i' }, maps.insert_table_alt, edit.insert_table_alt, opts)
+  map({ 'n', 'i' }, maps.delete_column, edit.delete_current_column, opts)
 end
 
 return {

@@ -48,12 +48,24 @@ local insert_table_alt = function()
   api.nvim_buf_set_lines(0, row, row + 1, true, lines)
 end
 
+local delete_current_column = function()
+  local root = utils.get_tbl_root(ts.get_node());
+  if not root then return end
+
+  local t = MdTable:new(root)
+  t:delete_current_column()
+  t:render()
+end
+
 return {
   insert_row_up = insert_row_up,
   insert_row_down = insert_row_down,
 
   insert_column_left = insert_column_left,
   insert_column_right = insert_column_right,
+
   insert_table = insert_table,
   insert_table_alt = insert_table_alt,
+
+  delete_current_column = delete_current_column,
 }
