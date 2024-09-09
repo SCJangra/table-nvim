@@ -323,6 +323,8 @@ function MdTable:delete_current_column()
 end
 
 ---Swap two columns in the table.
+---@param first number Index of the first column.
+---@param second number Index of the second column.
 function MdTable:swap_columns(first, second)
   assert(first <= #self.cols and first > 0, 'first column index is out of bounds')
   assert(second <= #self.cols and second > 0, 'second column index is out of bounds')
@@ -330,6 +332,16 @@ function MdTable:swap_columns(first, second)
   for _, row in ipairs(self.rows) do row[first], row[second] = row[second], row[first] end
 
   self.cols[first], self.cols[second] = self.cols[second], self.cols[first]
+end
+
+---Swap two rows in the table.
+---@param first number Index of the first row.
+---@param second number Index of the second row.
+function MdTable:swap_rows(first, second)
+  assert(first <= #self.rows and first > 0, 'first row index is out of bounds')
+  assert(second <= #self.rows and second > 0, 'second row index is out of bounds')
+
+  self.rows[first], self.rows[second] = self.rows[second], self.rows[first]
 end
 
 ---Move the cursor to a specific cell.

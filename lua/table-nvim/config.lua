@@ -7,6 +7,8 @@
 ---@field prev string Go to previous cell.
 ---@field insert_row_up string Insert a row above the current row.
 ---@field insert_row_down string Insert a row below the current row.
+---@field move_row_up string Move the current row up.
+---@field move_row_down string Move the current row down.
 ---@field insert_column_left string Insert a column to the left of current column.
 ---@field insert_column_right string Insert a column to the right of current column.
 ---@field move_column_left string Move the current column to the left.
@@ -17,12 +19,14 @@
 
 ---@type TableNvimConfig
 local uconf = {
-  padd_column_separators = false,  -- Insert a space around column separators.
+  padd_column_separators = true,   -- Insert a space around column separators.
   mappings = {                     -- All mappings work in Normal and Insert modes.
     next = '<TAB>',                -- Go to next cell.
     prev = '<S-TAB>',              -- Go to previous cell.
     insert_row_up = '<A-k>',       -- Insert a row above the current row.
     insert_row_down = '<A-j>',     -- Insert a row below the current row.
+    move_row_up = '<A-S-k>',       -- Move the current row up.
+    move_row_down = '<A-S-j>',     -- Move the current row down.
     insert_column_left = '<A-h>',  -- Insert a column to the left of current column.
     insert_column_right = '<A-l>', -- Insert a column to the right of current column.
     move_column_left = '<A-S-h>',  -- Move the current column to the left.
