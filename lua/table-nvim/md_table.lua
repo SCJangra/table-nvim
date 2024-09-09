@@ -322,4 +322,34 @@ function MdTable:delete_current_column()
   for i = index, len do self.cols[i] = self.cols[i + 1] end
 end
 
+---Swap two columns in the table.
+function MdTable:swap_columns(first, second)
+  assert(first <= #self.cols and first > 0, 'first column index is out of bounds')
+  assert(second <= #self.cols and second > 0, 'second column index is out of bounds')
+
+  for _, row in ipairs(self.rows) do row[first], row[second] = row[second], row[first] end
+
+  self.cols[first], self.cols[second] = self.cols[second], self.cols[first]
+end
+
+---Move the cursor to a specific cell.
+---@param row number Row index of the cell.
+---@param col number Column index of the cell.
+function MdTable:move_cursor_to(row, col)
+  local padd = conf.get_config().padd_column_separators
+
+  local c = 0
+
+  if self.pipes then c = padd and 2 or 1 end
+
+  for i = 1, col - 1 do
+    c = c + self.cols[i].max_width
+    c = padd and c + 3 or c + 1
+  end
+
+  local r = self.start + row
+
+  api.nvim_win_set_cursor(0, { r, c })
+end
+
 return MdTable

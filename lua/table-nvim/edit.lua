@@ -57,6 +57,27 @@ local delete_current_column = function()
   t:render()
 end
 
+local move_column = function(left)
+  local root = utils.get_tbl_root(ts.get_node());
+  if not root then return end
+
+  local t = MdTable:new(root)
+  local first = t.cursor_col
+  local second = left and first - 1 or first + 1
+
+  if left and second < 1 then return end
+  if not left and second > #t.cols then return end
+
+  vim.print(t.cursor_row, t.cursor_col)
+
+  t:swap_columns(first, second)
+  t:render()
+  t:move_cursor_to(t.cursor_row, second)
+end
+
+local move_column_left = function() move_column(true) end
+local move_column_right = function() move_column(false) end
+
 return {
   insert_row_up = insert_row_up,
   insert_row_down = insert_row_down,
@@ -66,6 +87,9 @@ return {
 
   insert_table = insert_table,
   insert_table_alt = insert_table_alt,
+
+  move_column_left = move_column_left,
+  move_column_right = move_column_right,
 
   delete_current_column = delete_current_column,
 }
