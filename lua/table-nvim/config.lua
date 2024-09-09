@@ -20,7 +20,7 @@
 ---@type TableNvimConfig
 local uconf = {
   padd_column_separators = true,   -- Insert a space around column separators.
-  mappings = {                     -- All mappings work in Normal and Insert modes.
+  mappings = {                     -- next and prev work in Normal and Insert mode. All other mappings work in Normal mode.
     next = '<TAB>',                -- Go to next cell.
     prev = '<S-TAB>',              -- Go to previous cell.
     insert_row_up = '<A-k>',       -- Insert a row above the current row.
