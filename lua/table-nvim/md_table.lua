@@ -2,7 +2,7 @@ local C = require('table-nvim.constants')
 local utils = require('table-nvim.utils')
 local conf = require('table-nvim.config')
 
-local api, ts = vim.api, vim.treesitter
+local api, ts, fn = vim.api, vim.treesitter, vim.fn
 
 ---@class (exact) MdTableCell
 ---@field type CellType The type of this cell.
@@ -58,7 +58,7 @@ function MdTable:new(root)
       cols[c] = cols[c] or {}
 
       local text = ts.get_node_text(col, 0):match('^%s*(.-)%s*$')
-      local width = #text
+      local width = fn.strwidth(text)
       local type = self:cell_type(text)
 
       -- Set the current column position of the cursor in the table.
@@ -191,17 +191,17 @@ function MdTable:cell_text(type, text, cell)
   local col = self.cols[cell]
 
   if col.alighment == C.ALIGN_LEFT or col.alighment == C.ALIGN_NONE then
-    local padding = col.max_width - #text
+    local padding = col.max_width - fn.strwidth(text)
     return text .. string.rep(' ', padding)
   end
 
   if col.alighment == C.ALIGN_RIGHT then
-    local padding = col.max_width - #text
+    local padding = col.max_width - fn.strwidth(text)
     return string.rep(' ', padding) .. text
   end
 
   local max_width = self.cols[cell].max_width
-  local padding = max_width - #text
+  local padding = max_width - fn.strwidth(text)
   local left_padding = math.floor(padding / 2)
   local right_padding = padding - left_padding
 
@@ -244,7 +244,7 @@ function MdTable:insert_column_at(index)
 
   local cell = self:gen_cell_for(1, index)
 
-  local col_info = { max_width = #cell.text, alighment = C.ALIGN_NONE }
+  local col_info = { max_width = fn.strwidth(cell.text), alighment = C.ALIGN_NONE }
 
   table.insert(self.cols, index, col_info)
 end
